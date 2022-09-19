@@ -215,11 +215,18 @@ impl<'c, 't> Sealer<'c, 't> {
 
         let seal_proof_type = (*proof_type).into();
 
+        let deals = self.task.sector.deals.as_ref();
+
+        debug!(
+            "handle_deals_acquired: {:?}, sector_id:{:?}, seal_proof_type: {:?}",
+            deals, sector_id, seal_proof_type
+        );
+
         let pieces = common::add_pieces(
             self.task,
             seal_proof_type,
             self.task.staged_file(sector_id),
-            self.task.sector.deals.as_ref().unwrap_or(&Vec::new()),
+            deals.unwrap_or(&Vec::new()),
         )?;
 
         Ok(Event::AddPiece(pieces))
