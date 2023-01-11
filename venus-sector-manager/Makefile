@@ -52,7 +52,7 @@ build-plugin-fsstore:
 	go run ./cmd/buildplugin/buildplugin.go -out-dir=./ -src-dir=./pkg/plugin/examples/fsstore/
 
 build-plugin-memdb:
-	rm -rf ./plugin-fsstore.so
+	rm -rf ./plugin-memdb.so
 	go run ./cmd/buildplugin/buildplugin.go -out-dir=./ -src-dir=./pkg/plugin/examples/memdb/
 
 .PHONY: venus-sector-manager
