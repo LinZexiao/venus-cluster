@@ -3,11 +3,7 @@ package kvstore
 import (
 	"context"
 	"fmt"
-
-	"github.com/ipfs-force-community/venus-cluster/venus-sector-manager/pkg/logging"
 )
-
-var Log = logging.New("kv")
 
 var (
 	ErrKeyNotFound      = fmt.Errorf("key not found")

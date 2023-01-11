@@ -10,10 +10,11 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 
 	"github.com/ipfs-force-community/venus-cluster/venus-sector-manager/pkg/kvstore"
+	"github.com/ipfs-force-community/venus-cluster/venus-sector-manager/pkg/logging"
 )
 
 var (
-	mlog   = kvstore.Log.With("driver", "mongo")
+	mlog   = logging.New("kv").With("driver", "mongo")
 	Upsert = true
 )
 

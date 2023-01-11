@@ -2,10 +2,11 @@ package kvstore
 
 import (
 	"github.com/ipfs-force-community/venus-cluster/venus-sector-manager/pkg/kvstore"
+	"github.com/ipfs-force-community/venus-cluster/venus-sector-manager/pkg/logging"
 	"github.com/ipfs-force-community/venus-cluster/venus-sector-manager/pkg/plugin"
 )
 
-var plog = kvstore.Log.With("driver", "plugin")
+var plog = logging.New("kv").With("driver", "plugin")
 
 func OpenPluginDB(path string, meta map[string]string) (kvstore.DB, error) {
 

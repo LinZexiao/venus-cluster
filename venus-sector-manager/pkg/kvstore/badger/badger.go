@@ -14,7 +14,7 @@ import (
 
 var _ kvstore.KVStore = (*BadgerKVStore)(nil)
 
-var blog = kvstore.Log.With("driver", "badger")
+var blog = logging.New("kv").With("driver", "badger")
 
 type blogger struct {
 	*logging.ZapLogger

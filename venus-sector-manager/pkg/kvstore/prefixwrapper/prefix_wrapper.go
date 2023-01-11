@@ -5,7 +5,10 @@ import (
 	"fmt"
 
 	"github.com/ipfs-force-community/venus-cluster/venus-sector-manager/pkg/kvstore"
+	"github.com/ipfs-force-community/venus-cluster/venus-sector-manager/pkg/logging"
 )
+
+var log = logging.New("kv").With("driver", "prefix-wrapper")
 
 var _ kvstore.KVStore = (*WrappedKVStore)(nil)
 
@@ -25,7 +28,7 @@ func NewWrappedKVStore(prefix []byte, inner kvstore.KVStore) (*WrappedKVStore, e
 		prefix = p
 	}
 
-	kvstore.Log.Debugw("kv wrapped", "prefix", string(prefix), "prefix-len", prefixLen)
+	log.Debugw("kv wrapped", "prefix", string(prefix), "prefix-len", prefixLen)
 
 	return &WrappedKVStore{
 		prefix:    prefix,
