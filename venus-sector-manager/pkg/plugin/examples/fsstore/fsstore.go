@@ -9,7 +9,7 @@ import (
 	"github.com/ipfs-force-community/venus-cluster/venus-sector-manager/pkg/plugin"
 )
 
-func OnInit(ctx context.Context, manifest *plugin.Manifest) {}
+func OnInit(ctx context.Context, manifest *plugin.Manifest) error { return nil }
 
 func Open(cfg objstore.Config) (objstore.Store, error) { // nolint: deadcode
 	return filestore.Open(cfg, true)
