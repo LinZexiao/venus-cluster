@@ -16,7 +16,7 @@ import (
 )
 
 var (
-	pkgDir string
+	srcDir string
 	outDir string
 )
 
@@ -49,23 +49,23 @@ func PluginManifest() *plugin.Manifest {
 `
 
 func init() {
-	flag.StringVar(&pkgDir, "pkg-dir", "", "plugin package folder path")
+	flag.StringVar(&srcDir, "src-dir", "", "plugin source folder path")
 	flag.StringVar(&outDir, "out-dir", "", "plugin packaged folder path")
 	flag.Usage = usage
 }
 
 func usage() {
-	log.Printf("Usage: %s --pkg-dir [plugin source pkg folder] --out-dir [plugin packaged folder path]\n", filepath.Base(os.Args[0]))
+	log.Printf("Usage: %s --src-dir [plugin source folder] --out-dir [plugin packaged folder path]\n", filepath.Base(os.Args[0]))
 	flag.PrintDefaults()
 	os.Exit(1)
 }
 
 func main() {
 	flag.Parse()
-	if pkgDir == "" || outDir == "" {
+	if srcDir == "" || outDir == "" {
 		flag.Usage()
 	}
-	pkgDir, err := filepath.Abs(pkgDir)
+	srcDir, err := filepath.Abs(srcDir)
 	if err != nil {
 		log.Printf("unable to resolve absolute representation of package path , %+v\n", err)
 		flag.Usage()
@@ -76,16 +76,16 @@ func main() {
 		flag.Usage()
 	}
 
-	if err := Build(pkgDir, outDir); err != nil {
+	if err := Build(srcDir, outDir); err != nil {
 		log.Fatalln(err)
 	}
 }
 
-func Build(pkgDir, outDir string) error {
+func Build(srcDir, outDir string) error {
 	var manifest map[string]interface{}
-	_, err := toml.DecodeFile(filepath.Join(pkgDir, "manifest.toml"), &manifest)
+	_, err := toml.DecodeFile(filepath.Join(srcDir, "manifest.toml"), &manifest)
 	if err != nil {
-		return fmt.Errorf("read pkg %s's manifest failure, %w", pkgDir, err)
+		return fmt.Errorf("read pkg %s's manifest failure, %w", srcDir, err)
 	}
 	manifest["buildTime"] = time.Now().Format("2006.01.02 15:04:05")
 
@@ -95,7 +95,7 @@ func Build(pkgDir, outDir string) error {
 		return fmt.Errorf("generate code failure during parse template, %w", err)
 	}
 
-	genFileName := filepath.Join(pkgDir, filepath.Base(pkgDir)+".gen.go")
+	genFileName := filepath.Join(srcDir, filepath.Base(srcDir)+".gen.go")
 	genFile, err := os.OpenFile(genFileName, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0700) // #nosec G302
 	if err != nil {
 		return fmt.Errorf("generate code failure during prepare output file, %w", err)
@@ -115,8 +115,8 @@ func Build(pkgDir, outDir string) error {
 	ctx := context.Background()
 	buildCmd := exec.CommandContext(ctx, "go", "build",
 		"-buildmode=plugin",
-		"-o", outputFile, pkgDir)
-	buildCmd.Dir = pkgDir
+		"-o", outputFile, srcDir)
+	buildCmd.Dir = srcDir
 	buildCmd.Stderr = os.Stderr
 	buildCmd.Stdout = os.Stdout
 	buildCmd.Env = append(os.Environ(), "GO111MODULE=on")
@@ -124,7 +124,7 @@ func Build(pkgDir, outDir string) error {
 	if err != nil {
 		return fmt.Errorf("compile plugin source code failure, %w", err)
 	}
-	fmt.Printf(`Package "%s" as plugin "%s" success.`+"\nManifest:\n", pkgDir, outputFile)
+	fmt.Printf(`Package "%s" as plugin "%s" success.`+"\nManifest:\n", srcDir, outputFile)
 	encoder := json.NewEncoder(os.Stdout)
 	encoder.SetIndent(" ", "\t")
 	err = encoder.Encode(manifest)
