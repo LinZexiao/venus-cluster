@@ -6,8 +6,9 @@ import (
 	"reflect"
 	"unsafe"
 
+	objstore "github.com/ipfs-force-community/venus-objstore"
+
 	"github.com/ipfs-force-community/venus-cluster/venus-sector-manager/pkg/kvstore"
-	"github.com/ipfs-force-community/venus-cluster/venus-sector-manager/pkg/objstore"
 )
 
 const (
