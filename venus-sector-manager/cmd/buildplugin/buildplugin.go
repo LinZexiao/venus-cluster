@@ -110,7 +110,7 @@ func Build(srcDir, outDir string) error {
 		return fmt.Errorf("generate code failure during generating code, %w", err)
 	}
 
-	outputFile := filepath.Join(outDir, pluginName+".so")
+	outputFile := filepath.Join(outDir, "plugin-"+pluginName+".so")
 	ctx := context.Background()
 	buildCmd := exec.CommandContext(ctx, "go", "build",
 		"-buildmode=plugin",

@@ -11,6 +11,7 @@ build-smgr:
 	$(MAKE) -C ./venus-sector-manager/ build-all
 	mv ./venus-sector-manager/venus-sector-manager ./dist/bin/
 	mv ./venus-sector-manager/plugin-fsstore.so ./dist/bin/
+	mv ./venus-sector-manager/plugin-memdb.so ./dist/bin/
 
 check-smgr:
 	$(MAKE) -C ./venus-sector-manager/ check-all
