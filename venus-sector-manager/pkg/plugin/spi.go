@@ -5,9 +5,6 @@ import (
 	"fmt"
 	"reflect"
 	"unsafe"
-
-	"github.com/ipfs-force-community/venus-cluster/venus-sector-manager/pkg/kvstore"
-	"github.com/ipfs-force-community/venus-cluster/venus-sector-manager/pkg/objstore"
 )
 
 const (
@@ -45,32 +42,9 @@ type Manifest struct {
 	Kind Kind
 }
 
-// TODO(0x5459): docs
-type KVStoreManifest struct {
-	Manifest
-
-	Constructor func(meta map[string]string) (kvstore.DB, error)
-}
-
-type ObjStoreManifest struct {
-	Manifest
-
-	Constructor func(cfg objstore.Config) (objstore.Store, error)
-}
-
 // ExportManifest exports a manifest to VSM as a known format.
 // it just casts sub-manifest to manifest.
 func ExportManifest(m interface{}) *Manifest {
 	v := reflect.ValueOf(m)
 	return (*Manifest)(unsafe.Pointer(v.Pointer()))
-}
-
-// DeclareKVStoreManifest declares manifest as KVStoreManifest.
-func DeclareKVStoreManifest(m *Manifest) *KVStoreManifest {
-	return (*KVStoreManifest)(unsafe.Pointer(m))
-}
-
-// DeclareObjStoreManifest declares manifest as ObjStoreManifest.
-func DeclareObjStoreManifest(m *Manifest) *ObjStoreManifest {
-	return (*ObjStoreManifest)(unsafe.Pointer(m))
 }

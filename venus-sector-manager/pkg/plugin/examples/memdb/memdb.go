@@ -8,7 +8,10 @@ import (
 	"github.com/tidwall/btree"
 
 	"github.com/ipfs-force-community/venus-cluster/venus-sector-manager/pkg/kvstore"
+	"github.com/ipfs-force-community/venus-cluster/venus-sector-manager/pkg/plugin"
 )
+
+func OnInit(ctx context.Context, manifest *plugin.Manifest) {}
 
 func Open(meta map[string]string) (kvstore.DB, error) {
 	return &memdb{

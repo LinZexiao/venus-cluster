@@ -1,7 +1,7 @@
 name = "memdb"
 description = ""
 kind = "KVStore"
-# onInit = "OnInit"
+onInit = "OnInit"
 # onShutdown = "OnShutdown"
 export = [
     {extPoint="Constructor", impl="Open"},
