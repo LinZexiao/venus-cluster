@@ -10,6 +10,7 @@ type Plugin struct {
 }
 
 func Load(path string) (plugin *Plugin, err error) {
+	plugin = &Plugin{}
 	plugin.library, err = goplugin.Open(path)
 	if err != nil {
 		// TODO(0x5459): error handing
