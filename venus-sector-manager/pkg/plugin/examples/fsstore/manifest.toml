@@ -1,0 +1,8 @@
+name = "fsstore"
+description = ""
+kind = "ObjStore"
+onInit = ""
+onShutdown = ""
+export = [
+    {extPoint="Constructor", impl="Open"},
+]

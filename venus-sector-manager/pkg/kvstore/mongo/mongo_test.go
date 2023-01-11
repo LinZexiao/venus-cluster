@@ -1,4 +1,4 @@
-package kvstore_test
+package mongo_test
 
 import (
 	"bytes"
@@ -12,6 +12,7 @@ import (
 	"github.com/strikesecurity/strikememongo"
 
 	"github.com/ipfs-force-community/venus-cluster/venus-sector-manager/pkg/kvstore"
+	"github.com/ipfs-force-community/venus-cluster/venus-sector-manager/pkg/kvstore/mongo"
 )
 
 var (
@@ -196,7 +197,7 @@ func TestMongoStore_Del(t *testing.T) {
 }
 
 func testMongoKV(t *testing.T, collection string) (kvstore.KVStore, func()) {
-	db, err := kvstore.OpenMongo(context.TODO(), mongoServer.URI(), "vcs")
+	db, err := mongo.OpenMongo(context.TODO(), mongoServer.URI(), "vcs")
 	require.NoError(t, err)
 	kv, err := db.OpenCollection(collection)
 	require.NoError(t, err)

@@ -7,6 +7,8 @@ import (
 	"github.com/urfave/cli/v2"
 
 	"github.com/ipfs-force-community/venus-cluster/venus-sector-manager/pkg/kvstore"
+	badgerkv "github.com/ipfs-force-community/venus-cluster/venus-sector-manager/pkg/kvstore/badger"
+	mongokv "github.com/ipfs-force-community/venus-cluster/venus-sector-manager/pkg/kvstore/mongo"
 )
 
 var defaultSubStore = []string{"common", "meta", "offline_meta", "sector-index", "snapup", "worker"}
@@ -55,8 +57,8 @@ var utilMigrateBadgerMongo = &cli.Command{
 		if badgerBasedir == "" {
 			badgerBasedir = home.Dir()
 		}
-		badger := kvstore.OpenBadger(badgerBasedir)
-		mongo, err := kvstore.OpenMongo(cctx.Context, cctx.String("mongo-dsn"), cctx.String("mongo-dbname"))
+		badger := badgerkv.OpenBadger(badgerBasedir)
+		mongo, err := mongokv.OpenMongo(cctx.Context, cctx.String("mongo-dsn"), cctx.String("mongo-dbname"))
 		if err != nil {
 			return fmt.Errorf("open mongodb dsn: %s, %w", mongoDSN, err)
 		}

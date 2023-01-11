@@ -94,6 +94,7 @@ type DBConfig struct {
 	Driver string
 	Badger *BadgerDBConfig
 	Mongo  *MongoDBConfig
+	Plugin *PluginDBConfig
 }
 
 func defaultDBConfig(example bool) DBConfig {
@@ -101,6 +102,7 @@ func defaultDBConfig(example bool) DBConfig {
 		Driver: "badger",
 		Badger: defaultBadgerDBConfig(),
 		Mongo:  nil,
+		Plugin: nil,
 	}
 }
 
@@ -130,6 +132,11 @@ type MongoDBConfig struct {
 // 	}
 // 	return &cfg
 // }
+
+type PluginDBConfig struct {
+	Path string
+	Meta map[string]string
+}
 
 type PieceStoreConfig struct {
 	Name   string

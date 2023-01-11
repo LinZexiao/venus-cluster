@@ -7,7 +7,7 @@ import (
 	"github.com/ipfs-force-community/venus-cluster/venus-sector-manager/pkg/logging"
 )
 
-var log = logging.New("kv")
+var Log = logging.New("kv")
 
 var (
 	ErrKeyNotFound      = fmt.Errorf("key not found")

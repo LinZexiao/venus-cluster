@@ -26,6 +26,9 @@ import (
 	"github.com/ipfs-force-community/venus-cluster/venus-sector-manager/pkg/confmgr"
 	"github.com/ipfs-force-community/venus-cluster/venus-sector-manager/pkg/homedir"
 	"github.com/ipfs-force-community/venus-cluster/venus-sector-manager/pkg/kvstore"
+	badgerkv "github.com/ipfs-force-community/venus-cluster/venus-sector-manager/pkg/kvstore/badger"
+	mongokv "github.com/ipfs-force-community/venus-cluster/venus-sector-manager/pkg/kvstore/mongo"
+	prefixwrapperkv "github.com/ipfs-force-community/venus-cluster/venus-sector-manager/pkg/kvstore/prefixwrapper"
 	"github.com/ipfs-force-community/venus-cluster/venus-sector-manager/pkg/market"
 	"github.com/ipfs-force-community/venus-cluster/venus-sector-manager/pkg/messager"
 	"github.com/ipfs-force-community/venus-cluster/venus-sector-manager/pkg/objstore"
@@ -134,7 +137,7 @@ func BuildBadgerDB(lc fx.Lifecycle, badgerCfg *modules.BadgerDBConfig, home *hom
 	if baseDir == "" {
 		baseDir = home.Dir()
 	}
-	db := kvstore.OpenBadger(baseDir)
+	db := badgerkv.OpenBadger(baseDir)
 
 	lc.Append(fx.Hook{
 		OnStart: func(ctx context.Context) error {
@@ -154,7 +157,7 @@ func BuildMongoDB(gctx GlobalContext, lc fx.Lifecycle, mongoCfg *modules.MongoDB
 		return nil, fmt.Errorf("invalid mongodb config")
 	}
 
-	db, err := kvstore.OpenMongo(gctx, mongoCfg.DSN, mongoCfg.DatabaseName)
+	db, err := mongokv.OpenMongo(gctx, mongoCfg.DSN, mongoCfg.DatabaseName)
 	if err != nil {
 		return nil, err
 	}
@@ -171,6 +174,10 @@ func BuildMongoDB(gctx GlobalContext, lc fx.Lifecycle, mongoCfg *modules.MongoDB
 	return db, err
 }
 
+func BuildPluginDB(gctx GlobalContext, lc fx.Lifecycle, pluginDBCfg *modules.PluginDBConfig) {
+
+}
+
 func BuildCommonMetaStore(db UnderlyingDB) (CommonMetaStore, error) {
 	return db.OpenCollection("common")
 }
@@ -184,7 +191,7 @@ func BuildOfflineMetaStore(db UnderlyingDB) (OfflineMetaStore, error) {
 }
 
 func BuildSectorNumberAllocator(meta OnlineMetaStore) (core.SectorNumberAllocator, error) {
-	store, err := kvstore.NewWrappedKVStore([]byte("sector-number"), meta)
+	store, err := prefixwrapperkv.NewWrappedKVStore([]byte("sector-number"), meta)
 	if err != nil {
 		return nil, err
 	}
@@ -193,12 +200,12 @@ func BuildSectorNumberAllocator(meta OnlineMetaStore) (core.SectorNumberAllocato
 }
 
 func BuildLocalSectorStateManager(online OnlineMetaStore, offline OfflineMetaStore) (core.SectorStateManager, error) {
-	onlineStore, err := kvstore.NewWrappedKVStore([]byte("sector-states"), online)
+	onlineStore, err := prefixwrapperkv.NewWrappedKVStore([]byte("sector-states"), online)
 	if err != nil {
 		return nil, err
 	}
 
-	offlineStore, err := kvstore.NewWrappedKVStore([]byte("sector-states-offline"), offline)
+	offlineStore, err := prefixwrapperkv.NewWrappedKVStore([]byte("sector-states-offline"), offline)
 	if err != nil {
 		return nil, err
 	}
@@ -440,7 +447,7 @@ func BuildPersistedFileStoreMgr(scfg *modules.Config, locker confmgr.RLocker, gl
 		policy[st.Instance(context.Background())] = persistCfg[pi].StoreSelectPolicy
 	}
 
-	wrapped, err := kvstore.NewWrappedKVStore([]byte("objstore"), globalStore)
+	wrapped, err := prefixwrapperkv.NewWrappedKVStore([]byte("objstore"), globalStore)
 	if err != nil {
 		return nil, fmt.Errorf("construct wrapped kv store for objstore: %w", err)
 	}
@@ -449,7 +456,7 @@ func BuildPersistedFileStoreMgr(scfg *modules.Config, locker confmgr.RLocker, gl
 }
 
 func BuildSectorIndexer(storeMgr PersistedObjectStoreManager, kv SectorIndexMetaStore) (core.SectorIndexer, error) {
-	upgrade, err := kvstore.NewWrappedKVStore([]byte("sector-upgrade"), kv)
+	upgrade, err := prefixwrapperkv.NewWrappedKVStore([]byte("sector-upgrade"), kv)
 	if err != nil {
 		return nil, fmt.Errorf("wrap kvstore for sector-upgrade: %w", err)
 	}
