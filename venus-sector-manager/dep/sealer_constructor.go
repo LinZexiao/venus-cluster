@@ -28,6 +28,7 @@ import (
 	"github.com/ipfs-force-community/venus-cluster/venus-sector-manager/pkg/kvstore"
 	badgerkv "github.com/ipfs-force-community/venus-cluster/venus-sector-manager/pkg/kvstore/badger"
 	mongokv "github.com/ipfs-force-community/venus-cluster/venus-sector-manager/pkg/kvstore/mongo"
+	pluginkv "github.com/ipfs-force-community/venus-cluster/venus-sector-manager/pkg/kvstore/plugin"
 	prefixwrapperkv "github.com/ipfs-force-community/venus-cluster/venus-sector-manager/pkg/kvstore/prefixwrapper"
 	"github.com/ipfs-force-community/venus-cluster/venus-sector-manager/pkg/market"
 	"github.com/ipfs-force-community/venus-cluster/venus-sector-manager/pkg/messager"
@@ -123,6 +124,8 @@ func BuildUnderlyingDB(gctx GlobalContext, lc fx.Lifecycle, scfg *modules.SafeCo
 		return BuildBadgerDB(lc, commonCfg.DB.Badger, home)
 	case "mongo", "Mongo":
 		return BuildMongoDB(gctx, lc, commonCfg.DB.Mongo)
+	case "plugin", "Plugin":
+		return BuildPluginDB(lc, commonCfg.DB.Plugin)
 	default:
 		return nil, fmt.Errorf("unsupported db driver %s", commonCfg.DB.Driver)
 	}
@@ -161,6 +164,7 @@ func BuildMongoDB(gctx GlobalContext, lc fx.Lifecycle, mongoCfg *modules.MongoDB
 	if err != nil {
 		return nil, err
 	}
+
 	lc.Append(fx.Hook{
 		OnStart: func(ctx context.Context) error {
 			return db.Run(ctx)
@@ -174,8 +178,25 @@ func BuildMongoDB(gctx GlobalContext, lc fx.Lifecycle, mongoCfg *modules.MongoDB
 	return db, err
 }
 
-func BuildPluginDB(gctx GlobalContext, lc fx.Lifecycle, pluginDBCfg *modules.PluginDBConfig) {
+func BuildPluginDB(lc fx.Lifecycle, pluginDBCfg *modules.PluginDBConfig) (UnderlyingDB, error) {
+	if pluginDBCfg == nil {
+		return nil, fmt.Errorf("invalid plugin db config")
+	}
+	db, err := pluginkv.OpenPluginDB(pluginDBCfg.Path, pluginDBCfg.Meta)
+	if err != nil {
+		return nil, err
+	}
 
+	lc.Append(fx.Hook{
+		OnStart: func(ctx context.Context) error {
+			return db.Run(ctx)
+		},
+
+		OnStop: func(ctx context.Context) error {
+			return db.Close(ctx)
+		},
+	})
+	return db, err
 }
 
 func BuildCommonMetaStore(db UnderlyingDB) (CommonMetaStore, error) {
