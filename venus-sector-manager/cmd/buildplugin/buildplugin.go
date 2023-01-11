@@ -55,7 +55,6 @@ func init() {
 }
 
 func usage() {
-	log.Printf("Usage: %s --src-dir [plugin source folder] --out-dir [plugin packaged folder path]\n", filepath.Base(os.Args[0]))
 	flag.PrintDefaults()
 	os.Exit(1)
 }

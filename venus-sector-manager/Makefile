@@ -49,7 +49,7 @@ build-venus-sector-manager:
 
 build-plugin-fsstore:
 	rm -rf ./plugin-fsstore.so
-	go run ./cmd/buildplugin/buildplugin.go -src -out-dir=./ -src-dir=./pkg/plugin/examples/fsstore/
+	go run ./cmd/buildplugin/buildplugin.go -out-dir=./ -src-dir=./pkg/plugin/examples/fsstore/
 
 build-plugin-memdb:
 	rm -rf ./plugin-fsstore.so
