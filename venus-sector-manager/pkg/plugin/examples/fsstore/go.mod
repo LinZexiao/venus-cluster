@@ -3,7 +3,7 @@ module github.com/ipfs-force-community/venus-cluster/venus-sector-manager/pkg/pl
 go 1.18
 
 require (
-	github.com/ipfs-force-community/venus-cluster/venus-sector-manager v0.0.0-20230106034123-784ce5888441
+	github.com/ipfs-force-community/venus-cluster/venus-sector-manager v0.0.0-20230111050932-155669d37f05
 	github.com/ipfs-force-community/venus-objstore v0.0.3
 )
 
@@ -20,5 +20,3 @@ require (
 	go.uber.org/zap v1.22.0 // indirect
 	golang.org/x/sys v0.0.0-20220811171246-fbc7d0a398ab // indirect
 )
-
-replace github.com/ipfs-force-community/venus-cluster/venus-sector-manager v0.0.0-20230106034123-784ce5888441 => github.com/ipfs-force-community/venus-cluster/venus-sector-manager v0.0.0-20230111033513-01948bd8b9fb
