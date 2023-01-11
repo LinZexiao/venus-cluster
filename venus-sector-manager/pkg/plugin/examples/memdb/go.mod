@@ -8,6 +8,7 @@ require (
 )
 
 require (
+	github.com/ipfs-force-community/venus-objstore v0.0.3 // indirect
 	github.com/ipfs/go-log/v2 v2.5.1 // indirect
 	github.com/mattn/go-isatty v0.0.16 // indirect
 	go.uber.org/atomic v1.10.0 // indirect
@@ -17,4 +18,4 @@ require (
 	golang.org/x/sys v0.0.0-20220811171246-fbc7d0a398ab // indirect
 )
 
-replace github.com/ipfs-force-community/venus-cluster/venus-sector-manager v0.0.0-20230106034123-784ce5888441 => github.com/ipfs-force-community/venus-cluster/venus-sector-manager v0.0.0-20230111031616-20dc26075e0c
+replace github.com/ipfs-force-community/venus-cluster/venus-sector-manager v0.0.0-20230106034123-784ce5888441 => github.com/ipfs-force-community/venus-cluster/venus-sector-manager v0.0.0-20230111033513-01948bd8b9fb

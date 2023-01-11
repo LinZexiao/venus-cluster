@@ -3,8 +3,10 @@ github.com/benbjohnson/clock v1.3.0 h1:ip6w0uFQkncKQ979AypyG0ER7mqUSBdKLOgAle/AT
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
-github.com/ipfs-force-community/venus-cluster/venus-sector-manager v0.0.0-20230111031616-20dc26075e0c h1:75WWhP8e9lVdME/+TIBWrrnRFSPKMD6iUIYZRsulB/o=
-github.com/ipfs-force-community/venus-cluster/venus-sector-manager v0.0.0-20230111031616-20dc26075e0c/go.mod h1:tE2wwpCOmCwT8Urs+FX7kq040drwF3F6QzRex2jEo1Q=
+github.com/ipfs-force-community/venus-cluster/venus-sector-manager v0.0.0-20230111033513-01948bd8b9fb h1:amEkEfjuwgosmo3b9brIH5zewsUPQPtUqetDc7WcHVk=
+github.com/ipfs-force-community/venus-cluster/venus-sector-manager v0.0.0-20230111033513-01948bd8b9fb/go.mod h1:tE2wwpCOmCwT8Urs+FX7kq040drwF3F6QzRex2jEo1Q=
+github.com/ipfs-force-community/venus-objstore v0.0.3 h1:/LyzD9UyF60ICEnBH3syfgpjAjqA2hCDwIrsjCloYRY=
+github.com/ipfs-force-community/venus-objstore v0.0.3/go.mod h1:f3i59qbe52av6PXUgk9qFa3PGS0CK76JnwoSpiyY0cM=
 github.com/ipfs/go-log/v2 v2.5.1 h1:1XdUzF7048prq4aBjDQQ4SL5RxftpRGdXhNRwKSAlcY=
 github.com/ipfs/go-log/v2 v2.5.1/go.mod h1:prSpmC1Gpllc9UYWxDiZDreBYw7zp4Iqp1kOLU9U5UI=
 github.com/kr/pretty v0.1.0/go.mod h1:dAy3ld7l9f0ibDNOQOHHMYYIIbhfbHSm3C4ZsoJORNo=
