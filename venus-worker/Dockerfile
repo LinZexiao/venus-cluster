@@ -29,7 +29,14 @@ RUN apt-get update && \
     mesa-opencl-icd \
     ocl-icd-opencl-dev
 
-COPY --from=build /build/target/release/venus-worker /venus-worker
+# DIR for app
+WORKDIR /app
+ENV PATH "$PATH:/app/"
+
+COPY --from=build /build/target/release/venus-worker /app/venus-worker
+COPY --from=build /build/assets/venus-woker.brief.toml /app/config.toml
+
+VOLUME [ "/data" ]
 
 EXPOSE 17891
-ENTRYPOINT ["/venus-worker"]
+ENTRYPOINT ["venus-worker"]
