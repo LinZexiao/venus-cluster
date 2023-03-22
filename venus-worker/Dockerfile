@@ -34,7 +34,7 @@ WORKDIR /app
 ENV PATH "$PATH:/app/"
 
 COPY --from=build /build/target/release/venus-worker /app/venus-worker
-COPY --from=build /build/assets/venus-woker.brief.toml /app/config.toml
+COPY --from=build /build/assets/venus-woker.default.toml /app/config.toml
 
 VOLUME [ "/data" ]
 

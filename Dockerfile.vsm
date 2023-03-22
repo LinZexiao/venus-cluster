@@ -17,7 +17,7 @@ ENV VENUS_COMPONENT=${BUILD_TARGET}
 COPY --from=buildenv  /build/dist/bin/${BUILD_TARGET} /app/${BUILD_TARGET}
 RUN venus-sector-manager daemon init
 
-VOLUME [ "~/.venus-sector-manager" ]
+VOLUME [ "${HOME}/.venus-sector-manager" ]
 VOLUME [ "/data" ]
 
 EXPOSE 1789
