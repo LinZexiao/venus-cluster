@@ -20,7 +20,7 @@ ARG GIT_FALLBACK="Unknown (no git or not git repo)"
 ARG GIT_COMMIT=${GIT_FALLBACK}
 RUN make build-all
 
-FROM debian:bullseye
+FROM filvenus/venus-runtime:latest
 RUN apt-get update && \
     apt-get install -y \
     --no-install-recommends \
