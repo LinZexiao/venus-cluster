@@ -20,7 +20,7 @@ ARG GIT_FALLBACK="Unknown (no git or not git repo)"
 ARG GIT_COMMIT=${GIT_FALLBACK}
 RUN make build-all
 
-FROM debian:bullseye
+FROM filvenus/venus-runtime:latest
 RUN apt-get update && \
     apt-get install -y \
     --no-install-recommends \
@@ -29,7 +29,14 @@ RUN apt-get update && \
     mesa-opencl-icd \
     ocl-icd-opencl-dev
 
-COPY --from=build /build/target/release/venus-worker /venus-worker
+# DIR for app
+WORKDIR /app
+ENV PATH "$PATH:/app/"
+
+COPY --from=build /build/target/release/venus-worker /app/venus-worker
+COPY --from=build /build/assets/venus-woker.default.toml /app/config.toml
+
+VOLUME [ "/data" ]
 
 EXPOSE 17891
-ENTRYPOINT ["/venus-worker"]
+ENTRYPOINT ["venus-worker"]

@@ -14,7 +14,11 @@ ARG BUILD_TARGET=${BUILD_TARGET}
 ENV VENUS_COMPONENT=${BUILD_TARGET}
 
 # copy the app from buildenv
-COPY --from=buildenv  /build/dist/bin/${BUILD_TARGET} /${BUILD_TARGET}
+COPY --from=buildenv  /build/dist/bin/${BUILD_TARGET} /app/${BUILD_TARGET}
+RUN venus-sector-manager daemon init
+
+VOLUME [ "${HOME}/.venus-sector-manager" ]
+VOLUME [ "/data" ]
 
 EXPOSE 1789
-ENTRYPOINT ["/venus-sector-manager"]
+ENTRYPOINT ["venus-sector-manager"]

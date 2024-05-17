@@ -1,0 +1,13 @@
+[worker]
+
+[metrics]
+
+[sector_manager]
+rpc_client.addr = "/ip4/127.0.0.1/tcp/1789"
+
+[[sealing_thread]]
+location = "{path to sealing store1}"
+
+
+[processors.limitation.concurrent]
+
